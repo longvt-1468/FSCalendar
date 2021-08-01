@@ -45,11 +45,11 @@
         _caseOptions = FSCalendarCaseOptionsHeaderUsesDefaultCase|FSCalendarCaseOptionsWeekdayUsesDefaultCase;
         
         _backgroundColors = [NSMutableDictionary dictionaryWithCapacity:5];
-        _backgroundColors[@(FSCalendarCellStateNormal)]      = [UIColor clearColor];
+        _backgroundColors[@(FSCalendarCellStateNormal)]      = FSCalendarStandardSelectionColor;
         _backgroundColors[@(FSCalendarCellStateSelected)]    = FSCalendarStandardSelectionColor;
-        _backgroundColors[@(FSCalendarCellStateDisabled)]    = [UIColor clearColor];
-        _backgroundColors[@(FSCalendarCellStatePlaceholder)] = [UIColor clearColor];
-        _backgroundColors[@(FSCalendarCellStateToday)]       = FSCalendarStandardTodayColor;
+        _backgroundColors[@(FSCalendarCellStateDisabled)]    = FSCalendarStandardSelectionColor;
+        _backgroundColors[@(FSCalendarCellStatePlaceholder)] = FSCalendarStandardSelectionColor;
+        _backgroundColors[@(FSCalendarCellStateToday)]       = FSCalendarStandardSelectionColor;
         
         _titleColors = [NSMutableDictionary dictionaryWithCapacity:5];
         _titleColors[@(FSCalendarCellStateNormal)]      = [UIColor blackColor];
@@ -65,8 +65,8 @@
         _subtitleColors[@(FSCalendarCellStatePlaceholder)] = [UIColor lightGrayColor];
         _subtitleColors[@(FSCalendarCellStateToday)]       = [UIColor whiteColor];
         
-        _borderColors[@(FSCalendarCellStateSelected)] = [UIColor clearColor];
-        _borderColors[@(FSCalendarCellStateNormal)] = [UIColor yellowColor];
+        _borderColors[@(FSCalendarCellStateSelected)] = [UIColor greenColor];
+        _borderColors[@(FSCalendarCellStateToday)] = [UIColor redColor];
         
         _borderRadius = 1.0;
         _eventDefaultColor = FSCalendarStandardEventDotColor;
@@ -356,7 +356,7 @@
     }
 }
 
-- (void)setBorderDefaultColor:(UIColor *)color
+- (void)setBorderTodayColor:(UIColor *)color
 {
     if (color) {
         _borderColors[@(FSCalendarCellStateNormal)] = color;
@@ -366,9 +366,9 @@
     [self.calendar configureAppearance];
 }
 
-- (UIColor *)borderDefaultColor
+- (UIColor *)borderTodayColor
 {
-    return _borderColors[@(FSCalendarCellStateNormal)];
+    return _borderColors[@(FSCalendarCellStateToday)];
 }
 
 - (void)setBorderSelectionColor:(UIColor *)color

@@ -188,8 +188,8 @@
         }
     }
     
-    UIColor *borderColor = self.dateIsToday ? [UIColor redColor] : (self.selected ? [UIColor greenColor] : [UIColor clearColor]);
-    UIColor *fillColor = [UIColor blueColor];
+    UIColor *borderColor = self.dateIsToday ? self.calendar.appearance.borderDefaultColor : (self.selected ? self.calendar.appearance.borderSelectionColor : [UIColor clearColor]);
+    UIColor *fillColor = self.calendar.appearance.selectionColor;
     _shapeLayer.opacity = self.placeholder ? 0.5 : 1;
     CGColorRef cellFillColor = fillColor.CGColor;
     if (!CGColorEqualToColor(_shapeLayer.fillColor, cellFillColor)) {

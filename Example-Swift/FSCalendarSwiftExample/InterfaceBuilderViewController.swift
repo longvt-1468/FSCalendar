@@ -29,11 +29,12 @@ class InterfaceBuilderViewController: UIViewController, FSCalendarDataSource, FS
                 self.calendar.appearance.weekdayTextColor = UIColor(red: 14/255.0, green: 69/255.0, blue: 221/255.0, alpha: 1.0)
                 self.calendar.appearance.headerTitleColor = UIColor(red: 14/255.0, green: 69/255.0, blue: 221/255.0, alpha: 1.0)
                 self.calendar.appearance.eventDefaultColor = UIColor(red: 31/255.0, green: 119/255.0, blue: 219/255.0, alpha: 1.0)
-                self.calendar.appearance.selectionColor = UIColor(red: 31/255.0, green: 119/255.0, blue: 219/255.0, alpha: 1.0)
+                self.calendar.appearance.selectionColor = UIColor(red: 18/255.0, green: 65/255.0, blue: 108/255.0, alpha: 1.0)
                 self.calendar.appearance.headerDateFormat = "MMMM yyyy"
                 self.calendar.appearance.todayColor = UIColor(red: 198/255.0, green: 51/255.0, blue: 42/255.0, alpha: 1.0)
                 self.calendar.appearance.borderRadius = 1.0
                 self.calendar.appearance.headerMinimumDissolvedAlpha = 0.2
+                
             case 1:
                 self.calendar.appearance.weekdayTextColor = UIColor.red
                 self.calendar.appearance.headerTitleColor = UIColor.darkGray
@@ -87,6 +88,10 @@ class InterfaceBuilderViewController: UIViewController, FSCalendarDataSource, FS
         
         // For UITest
         self.calendar.accessibilityIdentifier = "calendar"
+        self.calendar.appearance.selectionColor = UIColor(red: 18/255.0, green: 65/255.0, blue: 108/255.0, alpha: 1.0)
+        
+        self.calendar.appearance.borderDefaultColor = .orange
+        self.calendar.appearance.borderSelectionColor = .black
         print(self.calendar.currentPage)
 
     }
