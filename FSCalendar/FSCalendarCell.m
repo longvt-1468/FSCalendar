@@ -54,38 +54,35 @@
     
     label = [[UILabel alloc] initWithFrame:CGRectZero];
     label.textAlignment = NSTextAlignmentCenter;
-    label.textColor = [UIColor blackColor];
-    [self.contentView addSubview:label];
-    self.titleLabel = label;
-    
-    label = [[UILabel alloc] initWithFrame:CGRectZero];
-    label.textAlignment = NSTextAlignmentCenter;
     label.textColor = [UIColor lightGrayColor];
-    [self.contentView addSubview:label];
     self.subtitleLabel = label;
+    
+    imageView = [[UIImageView alloc] initWithFrame:CGRectZero];
+    imageView.contentMode = UIViewContentModeCenter;
+    [self.contentView addSubview:imageView];
+    self.imageView = imageView;
     
     shapeLayer = [CAShapeLayer layer];
     shapeLayer.backgroundColor = [UIColor clearColor].CGColor;
     shapeLayer.borderWidth = 1.0;
     shapeLayer.borderColor = [UIColor clearColor].CGColor;
     shapeLayer.opacity = 0;
-    [self.contentView.layer insertSublayer:shapeLayer below:_titleLabel.layer];
+    [self.contentView.layer insertSublayer:shapeLayer below:imageView.layer];
     self.shapeLayer = shapeLayer;
+    
+    label = [[UILabel alloc] initWithFrame:CGRectZero];
+    label.textAlignment = NSTextAlignmentCenter;
+    label.textColor = [UIColor blackColor];
+    [self.contentView addSubview:label];
+    self.titleLabel = label;
     
     eventIndicator = [[FSCalendarEventIndicator alloc] initWithFrame:CGRectZero];
     eventIndicator.backgroundColor = [UIColor clearColor];
     eventIndicator.hidden = YES;
-    [self.contentView addSubview:eventIndicator];
     self.eventIndicator = eventIndicator;
-    
-    imageView = [[UIImageView alloc] initWithFrame:CGRectZero];
-    imageView.contentMode = UIViewContentModeBottom|UIViewContentModeCenter;
-    [self.contentView addSubview:imageView];
-    self.imageView = imageView;
     
     self.clipsToBounds = NO;
     self.contentView.clipsToBounds = NO;
-    
 }
 
 - (void)layoutSubviews
@@ -102,39 +99,20 @@
         }
     }
     
-    if (_subtitle) {
-        CGFloat titleHeight = self.titleLabel.font.lineHeight;
-        CGFloat subtitleHeight = self.subtitleLabel.font.lineHeight;
-        
-        CGFloat height = titleHeight + subtitleHeight;
-        _titleLabel.frame = CGRectMake(
-                                       self.preferredTitleOffset.x,
-                                       (self.contentView.fs_height*5.0/6.0-height)*0.5+self.preferredTitleOffset.y,
-                                       self.contentView.fs_width,
-                                       titleHeight
-                                       );
-        _subtitleLabel.frame = CGRectMake(
-                                          self.preferredSubtitleOffset.x,
-                                          (_titleLabel.fs_bottom-self.preferredTitleOffset.y) - (_titleLabel.fs_height-_titleLabel.font.pointSize)+self.preferredSubtitleOffset.y,
-                                          self.contentView.fs_width,
-                                          subtitleHeight
-                                          );
-    } else {
-        _titleLabel.frame = CGRectMake(
-                                       self.preferredTitleOffset.x,
-                                       self.preferredTitleOffset.y,
-                                       self.contentView.fs_width,
-                                       floor(self.contentView.fs_height*5.0/6.0)
-                                       );
-    }
+    _imageView.frame = CGRectMake(self.preferredTitleOffset.x,
+                                  self.preferredTitleOffset.y,
+                                  self.contentView.fs_width,
+                                  floor(self.contentView.fs_height * 2/3)
+                                  );
     
-    _imageView.frame = CGRectMake(self.preferredImageOffset.x, self.preferredImageOffset.y, self.contentView.fs_width, self.contentView.fs_height);
+    _titleLabel.frame = CGRectMake(0, _imageView.frame.size.height, self.contentView.fs_width, 14);
     
-    CGFloat titleHeight = self.bounds.size.height*5.0/6.0;
+    CGFloat imageHeight = self.bounds.size.height* 2/3;
     CGFloat diameter = MIN(self.bounds.size.height*5.0/6.0,self.bounds.size.width);
     diameter = diameter > FSCalendarStandardCellDiameter ? (diameter - (diameter-FSCalendarStandardCellDiameter)*0.5) : diameter;
+    diameter -= 10;
     _shapeLayer.frame = CGRectMake((self.bounds.size.width-diameter)/2,
-                                   (titleHeight-diameter)/2,
+                                   (imageHeight-diameter)/2,
                                    diameter,
                                    diameter);
     
@@ -210,32 +188,24 @@
         }
     }
     
-    UIColor *borderColor = self.colorForCellBorder;
-    UIColor *fillColor = self.colorForCellFill;
-    
-    BOOL shouldHideShapeLayer = !self.selected && !self.dateIsToday && !borderColor && !fillColor;
-    
-    if (_shapeLayer.opacity == shouldHideShapeLayer) {
-        _shapeLayer.opacity = !shouldHideShapeLayer;
+    UIColor *borderColor = self.dateIsToday ? [UIColor redColor] : (self.selected ? [UIColor greenColor] : [UIColor clearColor]);
+    UIColor *fillColor = [UIColor blueColor];
+    _shapeLayer.opacity = self.placeholder ? 0.5 : 1;
+    CGColorRef cellFillColor = fillColor.CGColor;
+    if (!CGColorEqualToColor(_shapeLayer.fillColor, cellFillColor)) {
+        _shapeLayer.fillColor = cellFillColor;
+        _shapeLayer.lineWidth = 1.5;
     }
-    if (!shouldHideShapeLayer) {
-        
-        CGColorRef cellFillColor = self.colorForCellFill.CGColor;
-        if (!CGColorEqualToColor(_shapeLayer.fillColor, cellFillColor)) {
-            _shapeLayer.fillColor = cellFillColor;
-        }
-        
-        CGColorRef cellBorderColor = self.colorForCellBorder.CGColor;
-        if (!CGColorEqualToColor(_shapeLayer.strokeColor, cellBorderColor)) {
-            _shapeLayer.strokeColor = cellBorderColor;
-        }
-        
-        CGPathRef path = [UIBezierPath bezierPathWithRoundedRect:_shapeLayer.bounds
-                                                    cornerRadius:CGRectGetWidth(_shapeLayer.bounds)*0.5*self.borderRadius].CGPath;
-        if (!CGPathEqualToPath(_shapeLayer.path, path)) {
-            _shapeLayer.path = path;
-        }
-        
+    
+    CGColorRef cellBorderColor = borderColor.CGColor;
+    if (!CGColorEqualToColor(_shapeLayer.strokeColor, cellBorderColor)) {
+        _shapeLayer.strokeColor = cellBorderColor;
+    }
+    
+    CGPathRef path = [UIBezierPath bezierPathWithRoundedRect:_shapeLayer.bounds
+                                                cornerRadius:CGRectGetWidth(_shapeLayer.bounds)*0.5*self.borderRadius].CGPath;
+    if (!CGPathEqualToPath(_shapeLayer.path, path)) {
+        _shapeLayer.path = path;
     }
     
     if (![_image isEqual:_imageView.image]) {

@@ -80,20 +80,21 @@ class InterfaceBuilderViewController: UIViewController, FSCalendarDataSource, FS
         }
         
         self.calendar.appearance.caseOptions = [.headerUsesUpperCase,.weekdayUsesUpperCase]
-        self.calendar.select(self.formatter.date(from: "2017/08/10")!)
+        self.calendar.select(Date())
         
         let scopeGesture = UIPanGestureRecognizer(target: self.calendar, action: #selector(self.calendar.handleScopeGesture(_:)))
         self.calendar.addGestureRecognizer(scopeGesture)
         
         // For UITest
         self.calendar.accessibilityIdentifier = "calendar"
+        print(self.calendar.currentPage)
 
     }
     
     // MARK:- FSCalendarDataSource
     
     func calendar(_ calendar: FSCalendar, titleFor date: Date) -> String? {
-        return self.gregorian.isDateInToday(date) ? "今天" : nil
+        return self.gregorian.isDateInToday(date) ? "Today" : nil
     }
     
     func calendar(_ calendar: FSCalendar, subtitleFor date: Date) -> String? {
@@ -104,12 +105,11 @@ class InterfaceBuilderViewController: UIViewController, FSCalendarDataSource, FS
     }
     
     func maximumDate(for calendar: FSCalendar) -> Date {
-        return self.formatter.date(from: "2017/10/30")!
+        return self.formatter.date(from: "2099/10/30")!
     }
     
     func calendar(_ calendar: FSCalendar, numberOfEventsFor date: Date) -> Int {
-        let day: Int! = self.gregorian.component(.day, from: date)
-        return day % 5 == 0 ? day/5 : 0;
+        return 0
     }
     
     func calendar(_ calendar: FSCalendar, imageFor date: Date) -> UIImage? {

@@ -30,9 +30,9 @@
     self = [super init];
     if (self) {
         
-        _titleFont = [UIFont systemFontOfSize:FSCalendarStandardTitleTextSize];
+        _titleFont = [UIFont fontWithName: @"avenir" size: 12];
         _subtitleFont = [UIFont systemFontOfSize:FSCalendarStandardSubtitleTextSize];
-        _weekdayFont = [UIFont systemFontOfSize:FSCalendarStandardWeekdayTextSize];
+        _weekdayFont = [UIFont fontWithName: @"avenir-Medium" size: 14];;
         _headerTitleFont = [UIFont systemFontOfSize:FSCalendarStandardHeaderTextSize];
         
         _headerTitleColor = FSCalendarStandardTitleTextColor;
@@ -53,10 +53,10 @@
         
         _titleColors = [NSMutableDictionary dictionaryWithCapacity:5];
         _titleColors[@(FSCalendarCellStateNormal)]      = [UIColor blackColor];
-        _titleColors[@(FSCalendarCellStateSelected)]    = [UIColor whiteColor];
+        _titleColors[@(FSCalendarCellStateSelected)]    = [UIColor blackColor];
         _titleColors[@(FSCalendarCellStateDisabled)]    = [UIColor grayColor];
         _titleColors[@(FSCalendarCellStatePlaceholder)] = [UIColor lightGrayColor];
-        _titleColors[@(FSCalendarCellStateToday)]       = [UIColor whiteColor];
+        _titleColors[@(FSCalendarCellStateToday)]       = [UIColor blackColor];
         
         _subtitleColors = [NSMutableDictionary dictionaryWithCapacity:5];
         _subtitleColors[@(FSCalendarCellStateNormal)]      = [UIColor darkGrayColor];
@@ -66,7 +66,7 @@
         _subtitleColors[@(FSCalendarCellStateToday)]       = [UIColor whiteColor];
         
         _borderColors[@(FSCalendarCellStateSelected)] = [UIColor clearColor];
-        _borderColors[@(FSCalendarCellStateNormal)] = [UIColor clearColor];
+        _borderColors[@(FSCalendarCellStateNormal)] = [UIColor yellowColor];
         
         _borderRadius = 1.0;
         _eventDefaultColor = FSCalendarStandardEventDotColor;

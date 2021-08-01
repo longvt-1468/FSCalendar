@@ -157,8 +157,8 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     _firstWeekday = 1;
     [self invalidateDateTools];
     
-    _today = [self.gregorian startOfDayForDate:[NSDate date]];
-    _currentPage = [self.gregorian fs_firstDayOfMonth:_today];
+    _today = [NSDate date];
+    _currentPage = [self.gregorian fs_firstDayOfMonth: _today];
     
     
     _minimumDate = [self.formatter dateFromString:@"1970-01-01"];
@@ -885,6 +885,9 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 
 - (CGFloat)preferredHeaderHeight
 {
+    if (!_calendarHeaderView) {
+        return 0.0;
+    }
     if (_headerHeight == FSCalendarAutomaticDimension) {
         if (_preferredWeekdayHeight == FSCalendarAutomaticDimension) {
             if (!self.floatingMode) {
@@ -1104,7 +1107,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         }
         [_collectionView selectItemAtIndexPath:targetIndexPath animated:NO scrollPosition:UICollectionViewScrollPositionNone];
         FSCalendarCell *cell = (FSCalendarCell *)[_collectionView cellForItemAtIndexPath:targetIndexPath];
-        [cell performSelecting];
+//        [cell performSelecting];
         [self enqueueSelectedDate:targetDate];
         [self selectCounterpartDate:targetDate];
         
@@ -1284,7 +1287,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
             headerView.calendar = self;
             headerView.scrollEnabled = _scrollEnabled;
             [_contentView addSubview:headerView];
-            self.calendarHeaderView = headerView;
+//            self.calendarHeaderView = headerView;
             
         }
         
